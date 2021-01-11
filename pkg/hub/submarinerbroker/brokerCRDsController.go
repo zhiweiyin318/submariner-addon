@@ -3,11 +3,11 @@ package submarinerbroker
 import (
 	"context"
 	"fmt"
+	"github.com/openshift/library-go/pkg/operator/resource/resourceapply"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"path/filepath"
 
-	"github.com/open-cluster-management/submariner-addon/pkg/helpers"
 	"github.com/open-cluster-management/submariner-addon/pkg/hub/submarinerbroker/bindata"
 	"github.com/openshift/library-go/pkg/assets"
 	"github.com/openshift/library-go/pkg/controller/factory"
@@ -91,8 +91,8 @@ func (c *submarinerBrokerCRDsController) sync(ctx context.Context, syncCtx facto
 	}
 
 	// Apply CRDs
-	clientHolder := helpers.NewCRDClientHolder().WithAPIExtensionsClient(c.crdClient)
-	applyResults := helpers.ApplyCRDDirectly(
+	clientHolder := resourceapply.NewClientHolder().WithAPIExtensionsClient(c.crdClient)
+	applyResults := resourceapply.ApplyDirectly(
 		clientHolder,
 		syncCtx.Recorder(),
 		func(name string) ([]byte, error) {
